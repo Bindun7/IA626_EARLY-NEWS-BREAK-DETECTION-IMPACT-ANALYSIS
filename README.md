@@ -2,7 +2,7 @@
 # IA626_EARLY NEWS BREAK DETECTION AND IMPACT ANALYSIS
 
 
-# Overview of Project  
+## Overview of Project  
 
 The goal of this project is to determine whether public search behaviour (Google Trends) can act as an early indicator of breaking news events, and to analyse how news sentiment changes before and after official confirmation of an event.
 The project specifically investigates:
@@ -11,7 +11,7 @@ The project specifically investigates:
 •	Whether sentiment changes can predict search spikes
 
 
-# General Approach (Pipeline Overview) 
+## General Approach (Pipeline Overview) 
 
 This project integrates news content, public search behaviour, and time-series analysis to detect and analyze breaking news events
 
@@ -30,7 +30,7 @@ API_KEY= api_key_here
 The ‘.env’ file is intentionally excluded using ‘.gitignore’.
 
 
-# Data Sources
+## Data Sources
 •	NewsAPI – news articles and headlines
 •	Google Trends (PyTrends) – public search interest
 •	VADER NLP – sentiment analysis
@@ -38,33 +38,33 @@ The ‘.env’ file is intentionally excluded using ‘.gitignore’.
 # Logical Data Flow
 
 NewsAPI Articles
-        │
+        |
         ▼
 Sentiment Analysis (VADER)
-        │
-        ▼
+        |
+        
 Daily News Sentiment
         │
-        ├──────────────► Lagged Sentiment → Search Correlation
+        |-------> Lagged Sentiment → Search Correlation
         │
 Google Trends (Search Volume)
-        │
+        |
         ▼
 Official Break Detection (t0)
-        │
+        |
         ▼
 Pre-break (t-3..t-1) vs Post-break (t0..t+3)
-        │
+        |
         ▼
 Metrics, Reports, Visualizations
 
 
 
-# The full pipeline is implemented in:IA626_EARLY NEWS BREAK DETECTION AND IMPACT ANALYSIS.py
+## The full pipeline is implemented in the gile :IA626_EARLY NEWS BREAK DETECTION AND IMPACT ANALYSIS.py
 
 
-# Key Steps 
 ## Dependent packages
+
 import os,time,json,requests, time
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -73,14 +73,14 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from pytrends.request import TrendReq
 
 
-# 1.Configuration & Setup:
+## 1.Configuration & Setup:
 
 ![alt text](Images/image.png)
 
 
 The project sets up organized directories for storing data and figures to ensure clean and reproducible output management. It defines essential parameters, including the search keyword, API key with an environment-variable fallback, a 30-day news lookup window, and pagination limits for fetching articles from NewsAPI.
 
-# 2.	Fetch news articles using News API
+## 2.	Fetch news articles using News API
 ![alt text](Images/image-1.png)
 ![alt text](Images/image-2.png)
 
@@ -93,26 +93,26 @@ This table lists all news articles collected for the analysis, including their s
 These articles form the basis for calculating daily sentiment and understanding how media tone changed before and after the break.
 The dataset shows a mix of positive, negative, and neutral articles, which helps measure overall sentiment trends.
 
-# 3. Compute sentiment using VADER
+## 3. Compute sentiment using VADER
 
 ![alt text](Images/image-3.png)
 
 The add_sentiment() function computes sentiment scores for each news article by combining its title and description and processing the text using VADER’s sentiment analyzer. The resulting compound sentiment score is added as a new column in the dataset. The daily_sentiment() function then aggregates these scores by date, calculating the average sentiment per day to identify overall emotional trends in the news coverage.
 
-# 4.Fetch Google Trends daily search volume
+## 4.Fetch Google Trends daily search volume
 
 ![alt text](Images/image-4.png)
 
 The fetch_google_trends() function collects search-interest data for the target keyword using the Google Trends API (pytrends). It defines a time window based on the last DAYS_BACK days, builds the query payload, and retrieves daily search-volume values. The results are cleaned by renaming columns and converting the timestamp to a date format, returning a simplified dataset containing only the date and corresponding search volume
 
-# 5.Official Break Detection (t0)
+## 5.Official Break Detection (t0)
 
 ![alt text](Images/image-5.png)
 
 
 The detect_break_date() function looks through all the Google search data and finds the day when people searched for the topic the most. That highest-search day is treated as the “break point,” meaning something important or unusual likely happened on that date. The function prints this date and sends it back so the rest of the analysis can use it.
 
-# 6.Pre-Break vs Post-Break Analysis
+## 6.Pre-Break vs Post-Break Analysis
 
 ![alt text](Images/image-6.png)
 
@@ -134,7 +134,7 @@ Sentiment stays low on 08-12 but becomes highly positive on 10-12-2025 (0.73), i
 This supports the presence of an early signal leading up to the break.
 
 
-# 7.Generating Day-Wise Break Report
+## 7.Generating Day-Wise Break Report
 
 ![alt text](Images/image-7.png)
 
@@ -155,14 +155,14 @@ break_daywise_search_sentiment.csv
 
 The table shows search volume and sentiment for the 3 days before and 3 days after the break. Search interest spikes sharply on t0 (100) and moderately on t-3 (70), while most other days show no activity. Sentiment also peaks on t-1 (0.73) and stays positive on the break day (0.46), indicating strong emotional news coverage around the event.
 
-# 8.Metrics Computation
+## 8.Metrics Computation
 
 ![alt text](Images/image-9.png)
 
 The compute_metrics() function compares what happened before the break and after the break. It calculates the average search volume and average sentiment for the pre-break days and the post-break days. Then it measures how much search activity increased or decreased (in percentage) and how much the overall sentiment changed. These metrics help quantify the impact of the event in a clear and measurable way.
 
 
-# 9. Lagged Sentiment–Search Correlation
+## 9. Lagged Sentiment–Search Correlation
 
 
 ![alt text](Images/image-10.png)
@@ -177,7 +177,7 @@ lagged_sentiment_search.csv
 
 This table shows how well sentiment predicts search activity after a certain number of days. The strongest correlation occurs at lag = 4 days (0.5458), meaning sentiment changes appear about 4 days before search spikes. Negative correlations ( lag 6 = –0.26786) indicate days where sentiment and search move in opposite directions.
 
-# 10. spre-break news fetch and creating pre and post break reports
+## 10. spre-break news fetch and creating pre and post break reports
 
 
 ![alt text](Images/image-11.png)
@@ -187,7 +187,7 @@ The fetch_pre_break_news() function collects news articles from the 3 days just 
 
 The save_pre_post_reports() function then saves both the pre-break and post-break datasets into separate CSV files. This makes it easy to analyze, compare, or visualize what changed before and after the break event.
 
-# 11. Visualizations
+## 11. Visualizations
 
 ![alt text](Images/image-12.png)
 
@@ -195,32 +195,32 @@ The save_pre_post_reports() function then saves both the pre-break and post-brea
 
 The generate_plots() function creates different visual charts to help understand how search behavior and sentiment changed around the break date.
 
-# Search Timeline Plot:
+#### - Search Timeline Plot:
 Shows how Google search activity changed over time and marks the break date so we can see the spike clearly.
 
-# Sentiment Timeline Plot:
+#### - Sentiment Timeline Plot:
 Shows how the news mood (positive/negative) changed each day and whether it shifted around the break date.
 
-# Pre vs Post Search Bar Chart:
+#### - Pre vs Post Search Bar Chart:
 Compares average search volume before and after the break to show if public interest increased or decreased.
 
-# Pre vs Post Sentiment Bar Chart:
+#### -Pre vs Post Sentiment Bar Chart:
 Compares average news sentiment before and after the break to show if the tone became more positive or negative.
 
-# Search vs Sentiment Scatter Plot:
+#### -Search vs Sentiment Scatter Plot:
 Shows how search volume and sentiment relate to each other, with pre-break and post-break points shown separately.
 
 
 ![alt text](Images/image-14.png)
 
-# Lagged Correlation Plot 
+#### Lagged Correlation Plot 
 
 This plot shows whether sentiment changes happen before search changes.
 It graphs the correlation for different lag days (0 to 7), helping us see if news sentiment leads public search behavior.
 A positive value means sentiment increases before searches go up, while a negative value suggests the opposite.
 
 
-# 12 Output Reports & Their Purpose
+## Output Reports & Their Purpose
 
 ![alt text](Images/image-15.png)
 
@@ -232,7 +232,7 @@ The save_final_report() function creates one complete summary file for the entir
 It stores the break date, analysis window, number of pre-break articles, key metrics, and a simple interpretation section.
 This gives a final, easy-to-read snapshot explaining whether interest increased after the break and whether sentiment shifted.
 
-# 13. main pipeline
+##  main pipeline
 
 ![alt text](Images/image-16.png)
 
@@ -243,34 +243,36 @@ Here’s what it does step by step:
 
 Fetch news & add sentiment → Downloads all news articles, calculates their sentiment, and saves them.
 
-Compute daily sentiment → Averages sentiment per day and saves it.
+•	Fetch news & add sentiment → Downloads all news articles, calculates their sentiment, and saves them.
 
-Fetch Google Trends data → Gets daily search volume and saves it.
+•	Compute daily sentiment → Averages sentiment per day and saves it.
 
-Merge sentiment + search → Combines both datasets into one file for analysis.
+•	Fetch Google Trends data → Gets daily search volume and saves it.
 
-Lag analysis → Checks whether sentiment changes happen before search changes and saves the results + plot.
+•	Merge sentiment + search → Combines both datasets into one file for analysis.
 
-Detect break date → Finds the day with the highest search volume.
+•	Lag analysis → Checks whether sentiment changes happen before search changes and saves the results + plot.
 
-Build 7-day window report → Creates a report for days t-3 to t+3 and saves it.
+•	Detect break date → Finds the day with the highest search volume.
 
-Split pre/post break → Separates the 3 days before and 3 days after the break.
+•	Build 7-day window report → Creates a report for days t-3 to t+3 and saves it.
 
-Compute metrics → Calculates how search and sentiment changed after the break.
+•	Split pre/post break → Separates the 3 days before and 3 days after the break.
 
-Fetch pre-break news → Gets news articles from the days before the break.
+•	Compute metrics → Calculates how search and sentiment changed after the break.
 
-Generate plots → Creates all charts (timeline, bar charts, scatter, lag plot).
+•	Fetch pre-break news → Gets news articles from the days before the break.
 
-Save final report → Stores all results, metrics, and interpretations in a JSON file.
+•	Generate plots → Creates all charts (timeline, bar charts, scatter, lag plot).
+
+•	Save final report → Stores all results, metrics, and interpretations in a JSON file.
 
 
-# Output-Figures & Interpretation:
+## Output-Figures & Interpretation:
 
 These figures visually demonstrate early public attention and sentiment shifts.
 
-## - Search vs Sentiment Scatter
+### - Search vs Sentiment Scatter
 
 ![alt text](Images/image-18.png)
 
@@ -279,7 +281,7 @@ Pre-break points show low interest and mixed sentiment, while post-break points 
 Overall, it shows public attention and news tone both increased after the break.
 
 
-## -Google Search Trend Around Official Break
+### -Google Search Trend Around Official Break
 
 ![alt text](Images/image-19.png)
 
@@ -287,7 +289,7 @@ This plot shows how search interest changed over time, with a sharp spike in sea
 The red dashed line marks the official break, and the peak indicates a sudden surge in public attention at that moment.
 
 
-## -News Sentiment Timeline
+### -News Sentiment Timeline
 
 
 ![alt text](Images/image-20.png)
@@ -297,7 +299,7 @@ Sentiment becomes noticeably higher close to the break date, marked by the red d
 Overall, the news tone becomes more positive around the event
 
 
-## -Average Search Volume (Pre vs Post) 
+### -Average Search Volume (Pre vs Post) 
 
 
 ![alt text](Images/image-21.png)
@@ -308,7 +310,7 @@ Post-break sentiment: ~0.15
 
 Sentiment clearly drops after the break, meaning the news tone becomes less positive following the event.
 
-## -Average Sentiment (Pre vs Post)
+### -Average Sentiment (Pre vs Post)
 
 ![alt text](Images/image-22.png)
 
@@ -318,7 +320,7 @@ Post-break average search volume: ~33
 
 Search interest clearly increases after the break, showing higher public attention.
 
-## -Lagged Sentiment  Search Correlation
+### -Lagged Sentiment  Search Correlation
 
 ![alt text](Images/image-23.png)
 
@@ -326,7 +328,7 @@ This plot shows how strongly sentiment predicts search activity after a certain 
 The highest correlation occurs at lag = 4 days (~0.55), suggesting sentiment changes appear 4 days before search spikes.
 Negative values ( at lag = 6 with –0.28) show days where sentiment and search move in opposite directions.
 
-## -News Sentiment Timeline
+### -News Sentiment Timeline
 
 ![alt text](Images/image-24.png)
 
@@ -335,7 +337,7 @@ A noticeable rise in sentiment occurs close to the break date (red dashed line),
 Overall, sentiment fluctuates but becomes stronger and more positive near the event.
 
 
-# Result and Key findings
+## Result and Key findings
 
 
   "pre_avg_search": 23.33,
@@ -360,10 +362,10 @@ Key Findings
 •	Sentiment leads search behaviour by ~4 days
 
 
-# Conclusion
+## Conclusion
 
 This project demonstrates that Google search trends combined with news sentiment analysis form a reliable early-warning system for breaking news events. Public sentiment shifts typically occur several days before search spikes and official confirmation, making sentiment a leading indicator of emerging events. After confirmation, search interest rises sharply while sentiment declines, reflecting increased awareness and seriousness.
 
 
----------------------------------------------
+
 
