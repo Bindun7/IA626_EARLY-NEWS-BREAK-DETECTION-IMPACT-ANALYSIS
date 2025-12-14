@@ -37,14 +37,27 @@ The ‘.env’ file is intentionally excluded using ‘.gitignore’.
 
 # Logical Data Flow
 
-flowchart TD
-    A[Start] --> B[Data Collection]
-    B --> C[Data Cleaning]
-    C --> D[Sentiment Analysis]
-    D --> E[Google Trends Analysis]
-    E --> F[Break Detection]
-    F --> G[Visualization & Results]
-    G --> H[End]
+NewsAPI Articles
+        │
+        ▼
+Sentiment Analysis (VADER)
+        │
+        ▼
+Daily News Sentiment
+        │
+        ├───► Lagged Sentiment → Search Correlation
+        │
+        ▼
+Google Trends (Search Volume)
+        │
+        ▼
+Official Break Detection (t₀)
+        │
+        ▼
+Pre-break (t₋₃..t₋₁) vs Post-break (t₀..t₊₃)
+        │
+        ▼
+Metrics, Reports, Visualizations
 
 
 
